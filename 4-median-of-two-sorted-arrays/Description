@@ -1,0 +1,53 @@
+The median of a sorted array is the value which separates the lower half from the higher half. If the length of an array is odd, then the median is the middle element. If the length of an array is even, then the median is the arithmetic mean ((a+b)/2) of the last element of the lower half and the first element of the higher half.
+
+Examples:
+
+    1,2,3,4,5,6,7   median=4
+    1,2,3,4,5,6     median=(3+4)/2=3.5
+
+Properties:
+    - the maximum (last) element of the lower half is less or equal to the minimum (first) element of the higher half
+    - the size of the lower half is the same as the size of the higher half
+
+The goal is to find a way to split the input arrays where the left set has the same number of elements as the right set and the maximum element in the left set is less or equal to the minimum element in the right set. If the total length of the input arrays is odd, the extra element can be included into the left set.
+
+Examples:
+
+    a[1], a[2],  |  a[3], a[4], a[5]
+    b[1], b[2], b[3], b[4],  |  b[5], b[6], b[7]
+
+    a[1], a[2], a[3],  |  a[4], a[5]
+    b[1], b[2],  |  b[3], b[4]
+
+Since the input arrays are sorted:
+
+    - a[i] <= a[i+1]
+    - b[j] <= b[j+1]
+
+which means that to satisfy the median condition we just need to check that max(a[i], b[j]) <= min(a[i+1], b[j+1]), where i, j - our split indexes
+
+We can use the binary search algorithm to search one of the arrays (the one which has the minimum length). At every iteration we just need to find the corresponding split in the second array and check the median condition.
+
+
+Pseudocode:
+
+find_median(A[], B[], a_i, a_j)
+    split the current [a_i, a_j] A window in half (including extra element in the left part)
+    find the corresponding split index in B
+
+    left_max = the minimum on the left side
+    right_min = the maximum on the right side
+
+    IF left_max <= right_min THEN
+        calculate the median
+    ELSE IF the current split window has one element THEN
+        adjust the last window manually
+        calculate the median
+    ELSE
+        IF A[last_left_index] > >= right_min THEN
+            //must decrease the value in A - dividing the left part
+            find_median(A[], B[], a_i, last_left_index)
+        ELSE
+            find_median(A[], B[], last_left_index + 1, a_j)
+        END IF
+    END IF
