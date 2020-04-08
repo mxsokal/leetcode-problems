@@ -1,5 +1,3 @@
-package net.mxs.leetcode.problem.addtwonum;
-
 import static java.util.Objects.requireNonNull;
 
 /*

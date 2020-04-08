@@ -1,5 +1,3 @@
-package net.mxs.leetcode.problem.twosum;
-
 import java.util.Arrays;
 
 /*

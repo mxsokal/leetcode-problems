@@ -1,5 +1,3 @@
-package net.mxs.leetcode.problem.lswrc;
-
 import java.util.Map;
 import java.util.HashMap;
 import static java.lang.Math.max;
