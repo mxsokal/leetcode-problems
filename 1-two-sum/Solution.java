@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Map;
 import java.util.HashMap;
 import static java.util.Objects.requireNonNull;
@@ -31,7 +30,6 @@ import static java.util.Objects.requireNonNull;
     Time  complexity: O(n)
     Space complexity: O(n)
 */
-
 public final class Solution {
 
     public int[] solve(int[] numbers, int target) {
@@ -46,39 +44,11 @@ public final class Solution {
                 result = new int[]{indexByComplement.get(numbers[i]), i};
                 break;
             } else {
-                complement = getComplement(numbers[i], target);
+                complement = Math.addExact(target, -numbers[i]);
                 indexByComplement.put(complement, i);
             }
         }
         return result;
-    }
-
-    private Integer getComplement(int number, int target) {
-        long complement;
-
-        complement = target - number;
-        if ((complement < Integer.MIN_VALUE) || (complement > Integer.MAX_VALUE)) {
-            throw new IllegalArgumentException("number value " + number + " and target value "
-                                                    + target + " produce integer overflow");
-        }
-        return Integer.valueOf((int) complement);
-    }
-
-
-    //-----------------------------------------------------------------------------------------------------------------
-
-    public static void main(String[] args) {
-        Solution solution = new Solution();
-        int[] numbers;
-        int target;
-        int[] result;
-
-        numbers = Arrays.stream(args[0].split(","))
-            .mapToInt(Integer::parseInt)
-            .toArray();
-        target = Integer.parseInt(args[1]);
-        result = solution.solve(numbers, target);
-        System.out.println(Arrays.toString(result));
     }
 
 }
