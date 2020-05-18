@@ -1,23 +1,20 @@
-import java.util.List;
-import java.util.ArrayList;
 import static java.util.Objects.requireNonNull;
-
 
 /*
     Problem Description:
 
-        Given a string s and a non-empty string p, find all the start indices of p's anagrams in s.
-        Strings consists of lowercase English letters only and the length of both strings s and p will not be larger
-        than 20,100.
-        The order of output does not matter.
+        Given two strings s1 and s2, write a function to return true if s2 contains the permutation of s1.
+        In other words, one of the first string's permutations is the substring of the second string.        
+            The input strings only contain lower case letters.
+            The length of both given strings is in range [1, 10,000].
 
         Examples:
 
-            Input: s: "cbaebabacd" p: "abc"
-            Output: [0, 6]
+            Input: s1 = "ab" s2 = "eidbaooo"
+            Output: True
 
-            Input: s: "abab" p: "ab"
-            Output: [0, 1, 2]
+            Input: s1= "ab" s2 = "eidboaoo"
+            Output: False
 
     Time  complexity: O(n)
     Space complexity: O(1)
@@ -26,8 +23,8 @@ public final class Solution {
 
     private static final int LETTER_COUNT = 26; // 'a'-'z'
 
-    public List<Integer> solve(String string, String target) {
-        List<Integer> result = new ArrayList<>();
+    public boolean solve(String target, String string) {
+        boolean result = false;
 
         requireNonNull(string, "string is null");
         requireNonNull(target, "target is null");
@@ -37,22 +34,17 @@ public final class Solution {
         return result;
     }
 
-    private List<Integer> solve(char[] string, char[] target) {
-        List<Integer> result = new ArrayList<>();
+    private boolean solve(char[] string, char[] target) {
         int[] diff = new int[LETTER_COUNT]; // letter -> target.count(letter) - substring.count(letter)
         int count = 1;
+        int index = 0;
 
         count = calcDiffByLetter(diff, target, string, target.length);
-        if (count == 0) {
-            result.add(0);
+        while ((count != 0) && (index < (string.length - target.length))) {
+            count += (incLetter(diff, string, index) + decLetter(diff, string, index + target.length));
+            index++;
         }
-        for (int i = 0; i < (string.length - target.length); i++) {
-            count += (incLetter(diff, string, i) + decLetter(diff, string, i + target.length));
-            if (count == 0) {
-                result.add(i + 1);
-            }
-        }
-        return result;
+        return count == 0;
     }
 
     private int calcDiffByLetter(int[] diff, char[] stringA, char[] stringB, int length) {
